@@ -6,8 +6,8 @@
 OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입니다.
 
 ## 기능
-* 삼각형 그리기
-* 행렬을 통한 이동, 회전, 스케일 변환
+:heavy_check_mark: 삼각형 그리기
+:heavy_check_mark: 행렬을 통한 이동, 회전, 스케일 변환
 * 카메라 투영 및 이동
 * 텍스쳐 매핑
 * 라이팅 (Ambient + Diffuse + Specular)
