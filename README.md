@@ -6,18 +6,15 @@
 OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입니다.
 
 ## 기능
-:zap: 삼각형 그리기
-
-
-
-:zap: 행렬을 통한 이동, 회전, 스케일 변환
-:zap: 카메라 투영 및 이동
-:zap: 텍스쳐 매핑
-:zap: 라이팅 (Ambient + Diffuse + Specular)
+* 삼각형 그리기
+* 행렬을 통한 이동, 회전, 스케일 변환
+* 카메라 투영 및 이동
+* 텍스쳐 매핑
+* 라이팅 (Ambient + Diffuse + Specular)
   * Directional Light
   * Point Lights
   * Spot Lights
-:zap: 모델 로딩
-:zap: 셰도우 맵
-:zap: Skybox
+* 모델 로딩
+* 셰도우 맵
+* Skybox
 
