@@ -21,10 +21,7 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 :heavy_check_mark: 텍스쳐 매핑
 
 
-:heavy_check_mark: 라이팅 (Ambient + Diffuse + Specular)
-  * Directional Light
-  * Point Lights
-  * Spot Lights
+:heavy_check_mark: 라이팅 (Directional, Point, Spot)
 
 
 :heavy_check_mark: 모델 로딩
