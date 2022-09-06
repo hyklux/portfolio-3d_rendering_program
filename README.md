@@ -7,14 +7,35 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 
 ## 기능
 :heavy_check_mark: 삼각형 그리기
+
+
+
 :heavy_check_mark: 행렬을 통한 이동, 회전, 스케일 변환
-* 카메라 투영 및 이동
-* 텍스쳐 매핑
-* 라이팅 (Ambient + Diffuse + Specular)
+
+
+
+:heavy_check_mark: 카메라 투영 및 이동
+
+
+
+:heavy_check_mark: 텍스쳐 매핑
+
+
+
+:heavy_check_mark: 라이팅 (Ambient + Diffuse + Specular)
   * Directional Light
   * Point Lights
   * Spot Lights
-* 모델 로딩
-* 셰도우 맵
-* Skybox
+
+
+
+:heavy_check_mark: 모델 로딩
+
+
+
+:heavy_check_mark: 셰도우 맵
+
+
+
+:heavy_check_mark: Skybox
 
