@@ -1,4 +1,4 @@
-# 3D Rendering Program
+# 3D 렌더링 프로그램
 
 ![preview](https://user-images.githubusercontent.com/96270683/188530821-2ff262f7-b663-4068-b590-61707b66adc6.png)
 
