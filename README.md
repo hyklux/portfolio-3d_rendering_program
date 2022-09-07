@@ -35,7 +35,7 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 
 ## 상세 설명
 ### 삼각형 그리기
-그릴 삼각형의 버텍스 데이터를 버퍼에 입력하고 Fragment Shader에 컬러값을 빨간색으로 설정합니다.
+삼각형의 버텍스 데이터를 버퍼에 입력하고 Fragment Shader에 컬러값을 빨간색으로 설정합니다.
 
 
 ![opengl_triangle](https://user-images.githubusercontent.com/96270683/188780416-24783747-a690-4d49-8583-257063ae0eb6.PNG)
@@ -63,8 +63,21 @@ void CreateTriangle()
 	glBindVertexArray(0);
 }
 ```
-
 ### 이동, 회전, 스케일 변환
+이동, 회전, 스케일 변환행렬을 적용하여 삼각형의 위치, 각도, 비율을 조정합니다.
+
+
+![opengl_scale](https://user-images.githubusercontent.com/96270683/188781465-f34c0fa9-517d-4b47-96a1-eeaa33212a2a.PNG)
+``` c++
+glm::mat4 model(1.0f);
+
+model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+model = glm::translate(model, glm::vec3(triOffset, 0.0f, 0.0f));
+model = glm::scale(model, glm::vec3(curSize, 0.4f, 0.0f));
+
+glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+```
+		
 ### 카메라 투영 및 이동
 ### 텍스쳐 매핑
 ### 라이팅
