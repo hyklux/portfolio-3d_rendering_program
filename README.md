@@ -96,7 +96,7 @@ glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 ```
-- 버텍스 셰이더
+- Vertex Shader
 ``` c++
 #version 330
 
