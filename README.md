@@ -35,6 +35,7 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 
 ## 상세 설명
 ### 삼각형 그리기
+![opengl_triangle](https://user-images.githubusercontent.com/96270683/188780416-24783747-a690-4d49-8583-257063ae0eb6.PNG)
 ``` c++
 void CreateTriangle()
 {
