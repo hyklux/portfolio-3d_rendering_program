@@ -15,7 +15,7 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 :heavy_check_mark: 이동, 회전, 스케일 변환
 
 
-:heavy_check_mark: 카메라 투영 및 이동
+:heavy_check_mark: 카메라 투영
 
 
 :heavy_check_mark: 텍스쳐 매핑
@@ -78,7 +78,16 @@ model = glm::scale(model, glm::vec3(curSize, 0.4f, 0.0f));
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 ```
 		
-### 카메라 투영 및 이동
+### 카메라 투영
+카메라를 perspective로 투영합니다.
+
+
+
+![opengl_projection](https://user-images.githubusercontent.com/96270683/188787274-6c6570e3-9cf4-43d0-acc4-535d8760e7ab.PNG)
+``` c++
+glm::mat4 projection = glm::perspective(glm::radians(45.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
+glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+```
 ### 텍스쳐 매핑
 ### 라이팅
 ### 모델 로딩
