@@ -33,8 +33,7 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 :heavy_check_mark: Skybox
 
 
-## 상세 설명
-### 삼각형 그리기
+## 삼각형 그리기
 삼각형의 버텍스 데이터를 버퍼에 입력하고 Fragment Shader에 컬러값을 빨간색으로 설정합니다.
 
 
@@ -63,7 +62,7 @@ void CreateTriangle()
 	glBindVertexArray(0);
 }
 ```
-### 이동, 회전, 스케일 변환
+## 이동, 회전, 스케일 변환
 이동, 회전, 스케일 변환행렬을 적용하여 삼각형의 위치, 각도, 비율을 조정합니다.
 
 
@@ -78,7 +77,7 @@ model = glm::scale(model, glm::vec3(curSize, 0.4f, 0.0f));
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 ```
 		
-### 카메라 투영
+## 카메라 투영
 카메라를 perspective로 투영합니다.
 
 
@@ -119,7 +118,7 @@ void main()
 	TexCoord = tex;
 }
 ```
-### 텍스쳐 매핑
+## 텍스쳐 매핑
 텍스처 파일을 로드하여 모델에 적용합니다.
 
 
@@ -156,8 +155,8 @@ void Texture::UseTexture()
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 ```
-### 라이팅
-### 모델 로딩
-### 셰도우 맵
-### Skybox
+## 라이팅
+## 모델 로딩
+## 셰도우 맵
+## Skybox
 
