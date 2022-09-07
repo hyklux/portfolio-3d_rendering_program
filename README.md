@@ -252,7 +252,48 @@ void main()
 	colour = texture(theTexture, TexCoord) * finalColour;
 }
 ```
-## Spot Light
+### Spot Light
+Spot Light를 구현합니다.
+
+
+![opengl_spot_light](https://user-images.githubusercontent.com/96270683/188808820-5160caeb-7ccd-42e2-bf3b-7566f561c2e2.PNG)
+``` c++
+vec4 CalcSpotLight(SpotLight sLight)
+{
+	vec3 rayDirection = normalize(FragPos - sLight.base.position);
+	float slFactor = dot(rayDirection, sLight.direction);
+	
+	if(slFactor > sLight.edge)
+	{
+		vec4 colour = CalcPointLight(sLight.base);
+		
+		return colour * (1.0f - (1.0f - slFactor)*(1.0f/(1.0f - sLight.edge)));
+		
+	} else {
+		return vec4(0, 0, 0, 0);
+	}
+}
+
+vec4 CalcSpotLights()
+{
+	vec4 totalColour = vec4(0, 0, 0, 0);
+	for(int i = 0; i < spotLightCount; i++)
+	{		
+		totalColour += CalcSpotLight(spotLights[i]);
+	}
+	
+	return totalColour;
+}
+
+void main()
+{
+	vec4 finalColour = CalcDirectionalLight();
+	finalColour += CalcPointLights();
+	finalColour += CalcSpotLights();
+	
+	colour = texture(theTexture, TexCoord) * finalColour;
+}
+```
 ## 모델 로딩
 ## 셰도우 맵
 ## Skybox
