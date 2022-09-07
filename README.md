@@ -196,7 +196,7 @@ Point Light는 Directional Light 연산에 빛 감쇠(Attenuation) 연산을 더
 
 
 ![opengl_point_light](https://user-images.githubusercontent.com/96270683/188807781-70477324-3bf0-4606-a922-3633226c5802.PNG)
-- 프래그먼트 셰이더
+- Fragment Shader
 ``` c++
 vec4 CalcPointLights()
 {
@@ -252,7 +252,7 @@ void main()
 	colour = texture(theTexture, TexCoord) * finalColour;
 }
 ```
-## 
+## Spot Light
 ## 모델 로딩
 ## 셰도우 맵
 ## Skybox
