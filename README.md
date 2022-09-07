@@ -85,11 +85,39 @@ glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 
 ![opengl_projection](https://user-images.githubusercontent.com/96270683/188787274-6c6570e3-9cf4-43d0-acc4-535d8760e7ab.PNG)
 ``` c++
+model = glm::mat4(1.0f);
+model = glm::translate(model, glm::vec3(0.0f, 1.0f, -2.5f));
+model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
+
 camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
+
 glm::mat4 projection = glm::perspective(glm::radians(45.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
 
+glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+```
+- 버텍스 셰이더
+``` c++
+#version 330
+
+layout (location = 0) in vec3 pos;
+layout (location = 1) in vec2 tex;
+
+out vec4 vCol;
+out vec2 TexCoord;
+
+uniform mat4 model;
+uniform mat4 projection;
+uniform mat4 view;
+
+void main()
+{
+	gl_Position = projection * view * model * vec4(pos, 1.0);
+	vCol = vec4(clamp(pos, 0.0f, 1.0f), 1.0f);
+	
+	TexCoord = tex;
+}
 ```
 ### 텍스쳐 매핑
 텍스처 파일을 로드하여 모델에 적용합니다.
