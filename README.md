@@ -35,6 +35,31 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 
 ## 상세 설명
 ### 삼각형 그리기
+``` c++
+void CreateTriangle()
+{
+	GLfloat vertices[] = {
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f
+	};
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
+}
+```
+
 ### 이동, 회전, 스케일 변환
 ### 카메라 투영 및 이동
 ### 텍스쳐 매핑
