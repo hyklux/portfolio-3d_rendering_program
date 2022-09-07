@@ -191,69 +191,33 @@ void main()
 	colour = texture(theTexture, TexCoord) * (ambientColour + diffuseColour + specularColour);
 }
 ```
-### Spot Light
 ### Point Light
-프래그먼트 셰이더에서 Directional, Point, Spot 라이트에 대한 연산을 처리합니다.
+Point Light는 Directional Light 연산에 빛 감쇠(Attenuation) 연산을 더하여 처리합니다.
+
+
+![opengl_point_light](https://user-images.githubusercontent.com/96270683/188807781-70477324-3bf0-4606-a922-3633226c5802.PNG)
 - 프래그먼트 셰이더
 ``` c++
-#version 330
-
-in vec4 vCol;
-in vec2 TexCoord;
-in vec3 Normal;
-in vec3 FragPos;
-
-out vec4 colour;
-
-const int MAX_POINT_LIGHTS = 3;
-const int MAX_SPOT_LIGHTS = 3;
-
-struct Light
+vec4 CalcPointLights()
 {
-	vec3 colour;
-	float ambientIntensity;
-	float diffuseIntensity;
-};
-
-struct DirectionalLight 
-{
-	Light base;
-	vec3 direction;
-};
-
-struct PointLight
-{
-	Light base;
-	vec3 position;
-	float constant;
-	float linear;
-	float exponent;
-};
-
-struct SpotLight
-{
-	PointLight base;
-	vec3 direction;
-	float edge;
-};
-
-struct Material
-{
-	float specularIntensity;
-	float shininess;
-};
-
-uniform int pointLightCount;
-uniform int spotLightCount;
-
-uniform DirectionalLight directionalLight;
-uniform PointLight pointLights[MAX_POINT_LIGHTS];
-uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
-
-uniform sampler2D theTexture;
-uniform Material material;
-
-uniform vec3 eyePosition;
+	vec4 totalColour = vec4(0, 0, 0, 0);
+	for(int i = 0; i < pointLightCount; i++)
+	{
+		//Point Light 연산(Directional Light 연산 + 빛 감쇠 연산)
+		vec3 direction = FragPos - pointLights[i].position;
+		float distance = length(direction);
+		direction = normalize(direction);
+		
+		vec4 colour = CalcLightByDirection(pointLights[i].base, direction);
+		float attenuation = pointLights[i].exponent * distance * distance +
+							pointLights[i].linear * distance +
+							pointLights[i].constant;
+		
+		totalColour += (colour / attenuation);
+	}
+	
+	return totalColour;
+}
 
 vec4 CalcLightByDirection(Light light, vec3 direction)
 {
@@ -280,72 +244,15 @@ vec4 CalcLightByDirection(Light light, vec3 direction)
 	return (ambientColour + diffuseColour + specularColour);
 }
 
-vec4 CalcDirectionalLight()
-{
-	return CalcLightByDirection(directionalLight.base, directionalLight.direction);
-}
-
-vec4 CalcPointLight(PointLight pLight)
-{
-	vec3 direction = FragPos - pLight.position;
-	float distance = length(direction);
-	direction = normalize(direction);
-	
-	vec4 colour = CalcLightByDirection(pLight.base, direction);
-	float attenuation = pLight.exponent * distance * distance +
-						pLight.linear * distance +
-						pLight.constant;
-	
-	return (colour / attenuation);
-}
-
-vec4 CalcSpotLight(SpotLight sLight)
-{
-	vec3 rayDirection = normalize(FragPos - sLight.base.position);
-	float slFactor = dot(rayDirection, sLight.direction);
-	
-	if(slFactor > sLight.edge)
-	{
-		vec4 colour = CalcPointLight(sLight.base);
-		
-		return colour * (1.0f - (1.0f - slFactor)*(1.0f/(1.0f - sLight.edge)));
-		
-	} else {
-		return vec4(0, 0, 0, 0);
-	}
-}
-
-vec4 CalcPointLights()
-{
-	vec4 totalColour = vec4(0, 0, 0, 0);
-	for(int i = 0; i < pointLightCount; i++)
-	{		
-		totalColour += CalcPointLight(pointLights[i]);
-	}
-	
-	return totalColour;
-}
-
-vec4 CalcSpotLights()
-{
-	vec4 totalColour = vec4(0, 0, 0, 0);
-	for(int i = 0; i < spotLightCount; i++)
-	{		
-		totalColour += CalcSpotLight(spotLights[i]);
-	}
-	
-	return totalColour;
-}
-
 void main()
 {
 	vec4 finalColour = CalcDirectionalLight();
 	finalColour += CalcPointLights();
-	finalColour += CalcSpotLights();
 	
 	colour = texture(theTexture, TexCoord) * finalColour;
 }
 ```
+## 
 ## 모델 로딩
 ## 셰도우 맵
 ## Skybox
