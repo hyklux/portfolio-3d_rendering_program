@@ -27,7 +27,7 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 :heavy_check_mark: 모델 로딩
 
 
-:heavy_check_mark: 셰도우 맵
+:heavy_check_mark: Shadow Map
 
 
 :heavy_check_mark: Skybox
@@ -415,7 +415,7 @@ void Model::LoadMaterials(const aiScene * scene)
 	}
 }
 ```
-## 셰도우 맵
+## Shadow Map
 ### Directional Shadow Map
 ![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188812990-fb3984b6-cf9e-4c11-860b-9ef2eaf276a2.PNG)
 
