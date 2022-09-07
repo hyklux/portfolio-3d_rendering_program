@@ -416,5 +416,12 @@ void Model::LoadMaterials(const aiScene * scene)
 }
 ```
 ## 셰도우 맵
+## Directional Shadow Map
+![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188812990-fb3984b6-cf9e-4c11-860b-9ef2eaf276a2.PNG)
+
+## Omni Directional Shadow Map
+![opengl_omni_shadow](https://user-images.githubusercontent.com/96270683/188812956-62a0c2da-84bc-4eba-97cb-86d2e9657d3f.PNG)
+
 ## Skybox
+![opengl_skybox](https://user-images.githubusercontent.com/96270683/188812882-16438cf6-2ea3-4d53-aee6-9c07f2b2b3a2.PNG)
 
