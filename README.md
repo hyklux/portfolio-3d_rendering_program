@@ -265,10 +265,10 @@ vec4 CalcSpotLight(SpotLight sLight)
 	if(slFactor > sLight.edge)
 	{
 		vec4 colour = CalcPointLight(sLight.base);
-		
 		return colour * (1.0f - (1.0f - slFactor)*(1.0f/(1.0f - sLight.edge)));
-		
-	} else {
+	} 
+	else
+	{
 		return vec4(0, 0, 0, 0);
 	}
 }
