@@ -1,4 +1,4 @@
-# OpenGL 3D 렌더링 프로그램
+# 자체 제작 OpenGL 3D 렌더링 프로그램
 
 ![opengl_final](https://user-images.githubusercontent.com/96270683/188821931-f96d2f21-9546-48a2-9651-fef8c7cb5d18.PNG)
 ## 소개
