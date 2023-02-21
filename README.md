@@ -5,7 +5,7 @@
 OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입니다.
 
 
-프로그램을 실행하시려면 3DRenderingProgram.zip을 다운받아 압축을 푸신 후, 폴더 내 exe파일을 실행하시면 됩니다.
+프로그램을 실행하시려면 3DRenderingProgram.zip을 다운받아 압축을 푸신 후, 폴더 내 exe파일을 실행해 주세요.
 
 ## 기능
 :heavy_check_mark: 삼각형 그리기
