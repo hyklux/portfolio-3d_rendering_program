@@ -100,10 +100,8 @@ glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateView
 #version 330
 
 layout (location = 0) in vec3 pos;
-layout (location = 1) in vec2 tex;
 
 out vec4 vCol;
-out vec2 TexCoord;
 
 uniform mat4 model;
 uniform mat4 projection;
@@ -113,8 +111,6 @@ void main()
 {
 	gl_Position = projection * view * model * vec4(pos, 1.0);
 	vCol = vec4(clamp(pos, 0.0f, 1.0f), 1.0f);
-	
-	TexCoord = tex;
 }
 ```
 ## 텍스쳐 매핑
@@ -152,6 +148,44 @@ void Texture::UseTexture()
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
+}
+```
+- Vertex Shader
+``` c++
+#version 330
+
+layout (location = 0) in vec3 pos;
+layout (location = 1) in vec2 tex;
+
+out vec4 vCol;
+out vec2 TexCoord;
+
+uniform mat4 model;
+uniform mat4 projection;
+uniform mat4 view;
+
+void main()
+{
+	gl_Position = projection * view * model * vec4(pos, 1.0);
+	vCol = vec4(clamp(pos, 0.0f, 1.0f), 1.0f);
+	
+	TexCoord = tex;
+}
+```
+- Fragment Shader
+``` c++
+#version 330
+
+in vec4 vCol;
+in vec2 TexCoord;
+
+out vec4 colour;
+
+unifor sampler2D theTexture;
+
+void main()
+{
+	colour = texture(theTexture, TexCoord);
 }
 ```
 ## 라이팅
