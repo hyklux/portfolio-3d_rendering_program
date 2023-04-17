@@ -69,8 +69,11 @@ void CreateTriangle()
 ``` c++
 glm::mat4 model(1.0f);
 
+//회전
 model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+//이동
 model = glm::translate(model, glm::vec3(triOffset, 0.0f, 0.0f));
+//스케일 변환
 model = glm::scale(model, glm::vec3(curSize, 0.4f, 0.0f));
 
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
