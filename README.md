@@ -340,21 +340,6 @@ void main()
 
 ![opengl_model](https://user-images.githubusercontent.com/96270683/188810385-fb06b19d-3115-49dc-a741-64e09035da52.PNG)
 ``` c++
-void Model::RenderModel()
-{
-	for (size_t i = 0; i < meshList.size(); i++)
-	{
-		unsigned int materialIndex = meshToTex[i];
-
-		if (materialIndex < textureList.size() && textureList[materialIndex])
-		{
-			textureList[materialIndex]->UseTexture();
-		}
-
-		meshList[i]->RenderMesh();
-	}
-}
-
 void Model::LoadModel(const std::string & fileName)
 {
 	//파일로부터 모델 데이터 불러오기
@@ -461,6 +446,23 @@ void Model::LoadMaterials(const aiScene * scene)
 			textureList[i] = new Texture("Textures/plain.png");
 			textureList[i]->LoadTextureA();
 		}
+	}
+}
+
+void Model::RenderModel()
+{
+	for (size_t i = 0; i < meshList.size(); i++)
+	{
+		unsigned int materialIndex = meshToTex[i];
+		
+		//텍스쳐 렌더
+		if (materialIndex < textureList.size() && textureList[materialIndex])
+		{
+			textureList[materialIndex]->UseTexture();
+		}
+
+		//메시 렌더
+		meshList[i]->RenderMesh();
 	}
 }
 ```
