@@ -80,7 +80,7 @@ glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 ```
 		
 ## 카메라 투영
-카메라를 perspective로 투영합니다.
+카메라를 원근(perspective)으로 투영합니다. 투영 행렬 * 뷰스페이스 행렬 * 월드스페이스 행렬을 연산하여 vertex의 최종 위치를 계산합니다.  
 
 
 
@@ -112,6 +112,7 @@ uniform mat4 view;
 
 void main()
 {
+	//투영 행렬(projection) * 뷰스페이스 행렬(view) * 월드스페이스 행렬(model)을 연산하여 vertex의 최종 위치를 계산
 	gl_Position = projection * view * model * vec4(pos, 1.0);
 	vCol = vec4(clamp(pos, 0.0f, 1.0f), 1.0f);
 }
