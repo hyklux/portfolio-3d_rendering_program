@@ -390,6 +390,7 @@ void Model::LoadMesh(aiMesh * mesh, const aiScene * scene)
 	std::vector<GLfloat> vertices;
 	std::vector<unsigned int> indices;
 
+	//버텍스 정보 저장
 	for (size_t i = 0; i < mesh->mNumVertices; i++)
 	{
 		vertices.insert(vertices.end(), { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z });
@@ -403,7 +404,8 @@ void Model::LoadMesh(aiMesh * mesh, const aiScene * scene)
 		}
 		vertices.insert(vertices.end(), { -mesh->mNormals[i].x, -mesh->mNormals[i].y, -mesh->mNormals[i].z });
 	}
-
+	
+	//인덱스 정보 저장
 	for (size_t i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
@@ -413,6 +415,7 @@ void Model::LoadMesh(aiMesh * mesh, const aiScene * scene)
 		}
 	}
 
+	//메시 생성
 	Mesh* newMesh = new Mesh();
 	newMesh->CreateMesh(&vertices[0], &indices[0], vertices.size(), indices.size());
 	meshList.push_back(newMesh);
