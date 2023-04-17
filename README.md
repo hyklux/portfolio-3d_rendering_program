@@ -143,6 +143,7 @@ void Texture::LoadTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	//로드한 텍스쳐에 대한 렌더링 옵션 설정
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
