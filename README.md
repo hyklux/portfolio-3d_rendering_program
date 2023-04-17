@@ -357,19 +357,22 @@ void Model::LoadModel(const std::string & fileName)
 		printf("Model (%s) failed to load: %s", fileName, importer.GetErrorString());
 		return;
 	}
-
+	
+	//루트 노드부터 로딩 시작
 	LoadNode(scene->mRootNode, scene);
-
+	//머티리얼 로드
 	LoadMaterials(scene);
 }
 
 void Model::LoadNode(aiNode * node, const aiScene * scene)
 {
+	//노드에 속하는 메시 로드
 	for (size_t i = 0; i < node->mNumMeshes; i++)
 	{
 		LoadMesh(scene->mMeshes[node->mMeshes[i]], scene);
 	}
-
+	
+	//자식 노드를 재귀의 방식으로 계속 로드
 	for (size_t i = 0; i < node->mNumChildren; i++)
 	{
 		LoadNode(node->mChildren[i], scene);
@@ -388,7 +391,8 @@ void Model::LoadMesh(aiMesh * mesh, const aiScene * scene)
 		{
 			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y });
 		}
-		else {
+		else 
+		{
 			vertices.insert(vertices.end(), { 0.0f, 0.0f });
 		}
 		vertices.insert(vertices.end(), { -mesh->mNormals[i].x, -mesh->mNormals[i].y, -mesh->mNormals[i].z });
