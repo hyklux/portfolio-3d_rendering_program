@@ -354,6 +354,7 @@ void Model::RenderModel()
 
 void Model::LoadModel(const std::string & fileName)
 {
+	//파일로부터 모델 데이터 불러오기
 	Assimp::Importer importer;
 	const aiScene *scene = importer.ReadFile(fileName, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 
