@@ -520,6 +520,20 @@ void ShadowMap::Read(GLenum texUnit)
 	glBindTexture(GL_TEXTURE_2D, shadowMap);
 }
 ```
+- Directional Shadow Map Vertex Shader
+``` C++
+#version 330
+
+layout (location = 0) in vec3 pos;
+
+uniform mat4 model;
+uniform mat4 directionalLightTransform; //광원의 위치로의 변환 행렬
+
+void main()
+{
+	gl_Position = directionalLightTransform * model * vec4(pos, 1.0);
+}
+```
 ### Omni Directional Shadow Map
 ![opengl_omni_shadow](https://user-images.githubusercontent.com/96270683/188812956-62a0c2da-84bc-4eba-97cb-86d2e9657d3f.PNG)
 
