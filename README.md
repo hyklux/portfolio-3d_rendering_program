@@ -471,6 +471,53 @@ void Model::RenderModel()
 ![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188812990-fb3984b6-cf9e-4c11-860b-9ef2eaf276a2.PNG)
 - ShadowMap.cpp
 ``` c++
+bool ShadowMap::Init(unsigned int width, unsigned int height)
+{
+	shadowWidth = width; shadowHeight = height;
+
+	glGenFramebuffers(1, &FBO);
+
+	//섀도우 맵 텍스쳐 설젇
+	glGenTextures(1, &shadowMap);
+	glBindTexture(GL_TEXTURE_2D, shadowMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	
+	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+	//프레임버퍼에 섀도우 맵 데이터 저장
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowMap, 0);
+
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+
+	GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+	if (Status != GL_FRAMEBUFFER_COMPLETE)
+	{
+		printf("Framebuffer error: %s\n", Status);
+		return false;
+	}
+
+	return true;
+}
+
+void ShadowMap::Write()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
+}
+
+void ShadowMap::Read(GLenum texUnit)
+{
+	glActiveTexture(texUnit);
+	glBindTexture(GL_TEXTURE_2D, shadowMap);
+}
 ```
 ### Omni Directional Shadow Map
 ![opengl_omni_shadow](https://user-images.githubusercontent.com/96270683/188812956-62a0c2da-84bc-4eba-97cb-86d2e9657d3f.PNG)
