@@ -124,6 +124,7 @@ void main()
 
 
 ![opengl_texture](https://user-images.githubusercontent.com/96270683/188788484-c7ed729c-45e8-4922-a0e0-be2ce415ed27.PNG)
+- Texture.cpp
 ``` c++
 void Texture::LoadTexture()
 {
