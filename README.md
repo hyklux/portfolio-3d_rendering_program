@@ -198,8 +198,9 @@ void main()
 }
 ```
 ## 라이팅
+### 라이팅 구현에는 Phong Lighting Model(Ambient + Diffuse + Specular)의 개념을 사용합니다.
 ### Directional Light
-프래그먼트 셰이더에서 Ambient, Diffuse, Specular 라이트 연산을 처리하여 Directional Light를 구현합니다.
+프래그먼트 셰이더에서 Ambient, Diffuse, Specular 라이트 연산을 각각 처리하여 Directional Light를 구현합니다.
 
 
 ![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188805453-cd1a67df-6daf-400a-8efc-c726738456e1.PNG)
