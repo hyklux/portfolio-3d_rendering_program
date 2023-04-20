@@ -77,7 +77,7 @@ model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 model = glm::translate(model, glm::vec3(triOffset, 0.0f, 0.0f));
 //스케일 변환
 model = glm::scale(model, glm::vec3(curSize, 0.4f, 0.0f));
-
+//vertex shader에 uniformModel 값 넘겨주기
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 ```
 		
@@ -95,7 +95,7 @@ model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
 
 glm::mat4 projection = glm::perspective(glm::radians(45.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
-
+//vertex shader에 model(월드스페이스), projection(투영), view(뷰 스페이스) 값을 넘겨주기
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
