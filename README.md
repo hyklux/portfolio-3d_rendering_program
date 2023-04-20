@@ -208,16 +208,15 @@ void main()
 ``` c++
 void main()
 {
-	//Ambient Light 연산
+	//Ambient Light 연산 (빛의 색 * ambient 강도)
 	vec4 ambientColour = vec4(directionalLight.colour, 1.0f) * directionalLight.ambientIntensity;
 	
-	//Diffuse Light 연산
+	//Diffuse Light 연산 (빛의 색 * diffuse 강도 * diffuse 비율)
 	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f);
 	vec4 diffuseColour = vec4(directionalLight.colour, 1.0f) * directionalLight.diffuseIntensity * diffuseFactor;
 	
-	//Specular Light 연산
+	//Specular Light 연산  (빛의 색 * specular 강도 * shininess를 적용한 specular 비율)
 	vec4 specularColour = vec4(0, 0, 0, 0);
-	
 	if(diffuseFactor > 0.0f)
 	{
 		vec3 fragToEye = normalize(eyePosition - FragPos);
