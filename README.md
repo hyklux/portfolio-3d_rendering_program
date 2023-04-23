@@ -83,7 +83,7 @@ glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 ```
 		
 ## 카메라 투영
-카메라를 원근(perspective)으로 투영합니다. 투영 행렬 * 뷰스페이스 행렬 * 월드스페이스 행렬을 연산하여 vertex의 최종 위치를 계산합니다.  
+카메라를 원근(perspective)으로 투영합니다. 투영 행렬 * 뷰 스페이스 행렬 * 월드 스페이스 행렬을 연산하여 vertex의 최종 위치를 계산합니다.  
 
 
 
@@ -97,7 +97,7 @@ camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f
 
 glm::mat4 projection = glm::perspective(glm::radians(45.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
 
-//vertex shader에 model(월드스페이스), projection(투영), view(뷰 스페이스) 값을 넘겨주기
+//vertex shader에 model(월드 스페이스), projection(투영), view(뷰 스페이스) 값을 넘겨주기
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
