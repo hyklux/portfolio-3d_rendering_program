@@ -93,6 +93,7 @@ model = glm::mat4(1.0f);
 model = glm::translate(model, glm::vec3(0.0f, 1.0f, -2.5f));
 model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 
+//카메라 
 camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
 
 glm::mat4 projection = glm::perspective(glm::radians(45.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
@@ -116,7 +117,7 @@ uniform mat4 view;
 
 void main()
 {
-	//투영 행렬(projection) * 뷰스페이스 행렬(view) * 월드스페이스 행렬(model)을 연산하여 vertex의 최종 위치를 계산
+	//투영 행렬(projection) * 뷰 스페이스 행렬(view) * 월드 스페이스 행렬(model)을 연산하여 vertex의 최종 위치를 계산
 	gl_Position = projection * view * model * vec4(pos, 1.0);
 	vCol = vec4(clamp(pos, 0.0f, 1.0f), 1.0f);
 }
@@ -200,9 +201,9 @@ void main()
 }
 ```
 ## 라이팅
-라이팅 구현에는 Phong Lighting Model(Ambient + Diffuse + Specular) 개념을 사용합니다.
+라이팅 구현에는 Phong Lighting Model(Ambient + Diffuse + Specular)을 사용합니다.
 ### Directional Light
-프래그먼트 셰이더에서 Ambient, Diffuse, Specular 라이트 연산을 각각 처리하여 Directional Light를 구현합니다.
+Fragment Shader에서 Ambient, Diffuse, Specular 라이트 연산을 각각 처리하여 Directional Light를 구현합니다.
 
 
 ![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188805453-cd1a67df-6daf-400a-8efc-c726738456e1.PNG)
@@ -242,17 +243,22 @@ Point Light는 Directional Light 연산에 빛 감쇠(Attenuation) 연산을 더
 ![opengl_point_light](https://user-images.githubusercontent.com/96270683/188807781-70477324-3bf0-4606-a922-3633226c5802.PNG)
 - Fragment Shader
 ``` c++
+//Point Light 연산(Directional Light 연산 + 빛 감쇠 연산)
 vec4 CalcPointLights()
 {
 	vec4 totalColour = vec4(0, 0, 0, 0);
 	for(int i = 0; i < pointLightCount; i++)
 	{
-		//Point Light 연산(Directional Light 연산 + 빛 감쇠 연산)
 		vec3 direction = FragPos - pointLights[i].position;
+		//Point Light로부터의 거리 계산
 		float distance = length(direction);
+		//정규화된 Point Light로부터의 방향
 		direction = normalize(direction);
 		
+		//Directional Light 요소 연산
 		vec4 colour = CalcLightByDirection(pointLights[i].base, direction);
+		
+		//이차방정식을 이용하여 빛 감쇠 값 유도
 		float attenuation = pointLights[i].exponent * distance * distance +
 							pointLights[i].linear * distance +
 							pointLights[i].constant;
@@ -263,6 +269,7 @@ vec4 CalcPointLights()
 	return totalColour;
 }
 
+//Directional Light 요소 연산
 vec4 CalcLightByDirection(Light light, vec3 direction)
 {
 	vec4 ambientColour = vec4(light.colour, 1.0f) * light.ambientIntensity;
@@ -290,7 +297,9 @@ vec4 CalcLightByDirection(Light light, vec3 direction)
 
 void main()
 {
+	//Directional Light 연산 결과 적용
 	vec4 finalColour = CalcDirectionalLight();
+	//Point Lights 연산 결과 적용
 	finalColour += CalcPointLights();
 	
 	colour = texture(theTexture, TexCoord) * finalColour;
