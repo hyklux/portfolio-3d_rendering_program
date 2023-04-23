@@ -272,13 +272,15 @@ vec4 CalcPointLights()
 //Directional Light 요소 연산
 vec4 CalcLightByDirection(Light light, vec3 direction)
 {
+	//ambient 라이팅 계산
 	vec4 ambientColour = vec4(light.colour, 1.0f) * light.ambientIntensity;
 	
+	//diffuse 라이팅 계산
 	float diffuseFactor = max(dot(normalize(Normal), normalize(direction)), 0.0f);
 	vec4 diffuseColour = vec4(light.colour * light.diffuseIntensity * diffuseFactor, 1.0f);
 	
+	//specular 라이팅 계산
 	vec4 specularColour = vec4(0, 0, 0, 0);
-	
 	if(diffuseFactor > 0.0f)
 	{
 		vec3 fragToEye = normalize(eyePosition - FragPos);
@@ -292,6 +294,7 @@ vec4 CalcLightByDirection(Light light, vec3 direction)
 		}
 	}
 
+	//모든 라이팅 연산값의 합 반환
 	return (ambientColour + diffuseColour + specularColour);
 }
 
