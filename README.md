@@ -94,9 +94,10 @@ model = glm::mat4(1.0f);
 model = glm::translate(model, glm::vec3(0.0f, 1.0f, -2.5f));
 model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 
-//카메라 
+//카메라 설정
 camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
 
+//투영 정보 설정
 glm::mat4 projection = glm::perspective(glm::radians(45.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
 
 //vertex shader에 model(월드 스페이스), projection(투영), view(뷰 스페이스) 값을 넘겨주기
