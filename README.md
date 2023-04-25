@@ -195,7 +195,7 @@ in vec2 TexCoord;
 
 out vec4 colour;
 
-unifor sampler2D theTexture;
+uniform sampler2D theTexture;
 
 void main()
 {
