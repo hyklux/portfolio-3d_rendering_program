@@ -54,7 +54,8 @@ void CreateTriangle()
 	
 	//버퍼에 삼각형 꼭지점 버텍스 정보 저장
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//버텍스 정보가 3개씩 분리되어 인식되도록 설정
+	
+	//0번 속성에 vertices의 요소가 3개씩 분리되어 버텍스의 위치로 인식되도록 설정
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
 
