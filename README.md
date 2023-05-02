@@ -577,7 +577,30 @@ void main()
 ```
 ### Omni Directional Shadow Map
 ![opengl_omni_shadow](https://user-images.githubusercontent.com/96270683/188812956-62a0c2da-84bc-4eba-97cb-86d2e9657d3f.PNG)
+- Geometry Shader
+```C++
+#version 330
+layout (triangles) in;
+layout (triangle_strip, max_vertices=18) out;
 
+uniform mat4 lightMatrices[6];
+out vec4 FragPos;
+
+void main()
+{
+	for(int face = 0; face < 6; ++face)
+	{
+		gl_Layer = face;
+		for(int i = 0; i < 3; i++)
+		{
+			FragPos = gl_in[i].gl_Position;
+			gl_Position = lightMatrices[face] * FragPos;
+			EmitVertex();
+		}
+		EndPrimitive();
+	}
+}
+```
 ## Skybox
 ![opengl_skybox](https://user-images.githubusercontent.com/96270683/188812882-16438cf6-2ea3-4d53-aee6-9c07f2b2b3a2.PNG)
 
