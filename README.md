@@ -341,6 +341,7 @@ vec4 CalcSpotLight(SpotLight sLight)
 	vec3 rayDirection = normalize(FragPos - sLight.base.position);
 	float slFactor = dot(rayDirection, sLight.direction);
 	
+	//Spot Light 범위 안에 있으면 조명을 처리하고 그렇지 않으면 무시한다.
 	if(slFactor > sLight.edge)
 	{
 		vec4 colour = CalcPointLight(sLight.base);
@@ -365,6 +366,7 @@ vec4 CalcSpotLights()
 
 void main()
 {
+	//Directional Light, Point Lights, Spot Lights를 모두 계산한 값을 더해 최종 컬러값을 구한다.
 	vec4 finalColour = CalcDirectionalLight();
 	finalColour += CalcPointLights();
 	finalColour += CalcSpotLights();
