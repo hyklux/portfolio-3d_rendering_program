@@ -155,11 +155,11 @@ void Texture::LoadTexture()
 
 	//로드한 텍스쳐에 대한 렌더링 옵션 설정
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+	
 	//mipmap 생성
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-
 	stbi_image_free(texData);
 }
 
