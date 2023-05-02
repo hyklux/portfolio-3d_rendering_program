@@ -601,6 +601,21 @@ void main()
 	}
 }
 ```
+- Fragment Shader
+``` C++
+#version 330
+in vec4 FragPos;
+
+uniform vec3 lightPos;
+uniform float farPlane;
+
+void main()
+{
+	float distance = length(FragPos.xyz - lightPos);
+	distance = distance/farPlane;
+	gl_FragDepth = distance;
+}
+```
 ## Skybox
 ![opengl_skybox](https://user-images.githubusercontent.com/96270683/188812882-16438cf6-2ea3-4d53-aee6-9c07f2b2b3a2.PNG)
 
