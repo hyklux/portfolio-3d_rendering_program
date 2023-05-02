@@ -507,6 +507,7 @@ void Model::RenderModel()
 ```
 ## Shadow Map
 ### Directional Shadow Map
+Directional Light에 대한 그림자 처리에 사용
 ![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188812990-fb3984b6-cf9e-4c11-860b-9ef2eaf276a2.PNG)
 - ShadowMap.cpp
 ``` c++
