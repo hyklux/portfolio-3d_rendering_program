@@ -143,7 +143,7 @@ void Texture::LoadTexture()
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	/**텍스쳐 매핑 옵션 설정*/
+	/**텍스쳐 매핑 옵션 설정!*/
 	//가로 범위가 [0.0,1.0]을 벗어나게 되면 GL_REPEAT 옵션 적용
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	//세로 범위가 [0.0,1.0]을 벗어나게 되면 GL_REPEAT 옵션 적용
