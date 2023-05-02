@@ -234,7 +234,7 @@ void main()
 	vec4 ambientColour = vec4(directionalLight.colour, 1.0f) * directionalLight.ambientIntensity;
 	
 	/**Diffuse Light 연산 (빛의 색 * diffuse 강도 * diffuse 비율)*/
-	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f); //벡터의 내적을 통해 diffuseFactor 계산
+	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f); //법선 벡터와 빛 방향  내적을 통해 diffuseFactor 계산
 	vec4 diffuseColour = vec4(directionalLight.colour, 1.0f) * directionalLight.diffuseIntensity * diffuseFactor;
 	
 	/**Specular Light 연산  (빛의 색 * specular 강도 * shininess를 적용한 specular 비율)*/
@@ -270,8 +270,10 @@ vec4 CalcPointLights()
 	for(int i = 0; i < pointLightCount; i++)
 	{
 		vec3 direction = FragPos - pointLights[i].position;
+		
 		//Point Light로부터의 거리 계산
 		float distance = length(direction);
+		
 		//정규화된 Point Light로부터의 방향
 		direction = normalize(direction);
 		
@@ -289,7 +291,7 @@ vec4 CalcPointLights()
 	return totalColour;
 }
 
-//Directional Light 요소 연산
+//ambient, diffuse, specular 요소 연산
 vec4 CalcLightByDirection(Light light, vec3 direction)
 {
 	//ambient 라이팅 계산
