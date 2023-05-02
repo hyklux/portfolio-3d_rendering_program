@@ -204,6 +204,18 @@ void main()
 ```
 ## 라이팅
 라이팅 구현에는 Phong Lighting Model(Ambient + Diffuse + Specular)을 사용합니다.
+### Ambient
+
+
+![lighting_ambient](https://user-images.githubusercontent.com/96270683/235663786-f9c6df61-591b-4d50-ab7c-0953911bbcab.png)
+### Diffuse
+
+
+![lighting_diffuse](https://user-images.githubusercontent.com/96270683/235663845-1bb6a82f-8359-4038-befd-6d80e18e1d6e.png)
+### Specular
+
+
+![lighting_speccular](https://user-images.githubusercontent.com/96270683/235663875-c334c1d8-7823-4ee2-8be7-8bb7490ca465.png)
 ### Directional Light
 Fragment Shader에서 Ambient, Diffuse, Specular 라이트 연산을 각각 처리하여 Directional Light를 구현합니다.
 
