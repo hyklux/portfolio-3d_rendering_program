@@ -143,14 +143,19 @@ void Texture::LoadTexture()
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	//텍스쳐 매핑 옵션 설정
+	/**텍스쳐 매핑 옵션 설정*/
+	//가로 범위가 [0.0,1.0]을 벗어나게 되면 GL_REPEAT 옵션 적용
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//세로 범위가 [0.0,1.0]을 벗어나게 되면 GL_REPEAT 옵션 적용
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//폴리곤이 텍스처보다 작을 때 GL_LINEAR 옵션 적용
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//폴리곤이 텍스처보다 클 때 GL_LINEAR 옵션으로 적용
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	//로드한 텍스쳐에 대한 렌더링 옵션 설정
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+	//mipmap 생성
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
