@@ -97,7 +97,7 @@ model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 //카메라 설정
 camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
 
-//투영 정보 설정
+//투영 정보 설정(fov: 45도, 종횡비: 화면 가로/세로, Near Plane: 0.1f, Far Plane: 100.0 
 glm::mat4 projection = glm::perspective(glm::radians(45.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
 
 //vertex shader에 model(월드 스페이스), projection(투영), view(뷰 스페이스) 값을 넘겨주기
@@ -230,14 +230,14 @@ Fragment Shader에서 Ambient, Diffuse, Specular 라이트 연산을 각각 처�
 ``` c++
 void main()
 {
-	//Ambient Light 연산 (빛의 색 * ambient 강도)
+	/**Ambient Light 연산 (빛의 색 * ambient 강도)*/
 	vec4 ambientColour = vec4(directionalLight.colour, 1.0f) * directionalLight.ambientIntensity;
 	
-	//Diffuse Light 연산 (빛의 색 * diffuse 강도 * diffuse 비율)
-	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f);
+	/**Diffuse Light 연산 (빛의 색 * diffuse 강도 * diffuse 비율)*/
+	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f); //벡터의 내적을 통해 diffuseFactor 계산
 	vec4 diffuseColour = vec4(directionalLight.colour, 1.0f) * directionalLight.diffuseIntensity * diffuseFactor;
 	
-	//Specular Light 연산  (빛의 색 * specular 강도 * shininess를 적용한 specular 비율)
+	/**Specular Light 연산  (빛의 색 * specular 강도 * shininess를 적용한 specular 비율)*/
 	vec4 specularColour = vec4(0, 0, 0, 0);
 	if(diffuseFactor > 0.0f)
 	{
