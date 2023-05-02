@@ -244,6 +244,7 @@ void main()
 		vec3 fragToEye = normalize(eyePosition - FragPos);
 		vec3 reflectedVertex = normalize(reflect(directionalLight.direction, normalize(Normal)));
 		
+		//fragment에서 카메라를 향하는 벡터와 빛의 반사 벡터의 내적을 통해 specularFactor 계산
 		float specularFactor = dot(fragToEye, reflectedVertex);
 		if(specularFactor > 0.0f)
 		{
