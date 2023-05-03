@@ -46,21 +46,27 @@ void CreateTriangle()
 		0.0f, 1.0f, 0.0f
 	};
 
+	//VAO 생성
 	glGenVertexArrays(1, &VAO);
+	//VAO 수정 가능하도록 바인드
 	glBindVertexArray(VAO);
 
+	//VBO 생성
 	glGenBuffers(1, &VBO);
+	//VBO 수정 가능하도록 바인드
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	
-	//버퍼에 삼각형 꼭지점 버텍스 정보 저장
+	//VBO에 삼각형 꼭지점 버텍스 정보 저장
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	
-	//0번 속성에 vertices의 요소가 3개씩 분리되어 버텍스의 위치로 인식되도록 설정
+	//0번 속성에 vertices의 요소가 3개씩 분리되어 버텍스의 위치로 해석하도록 VAO에 설정
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	//VAO 사용 허용
 	glEnableVertexAttribArray(0);
 
-	//버퍼 정리
+	//VBO 수정 종료 및 연결 초기화
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//VAO 수정 종료 및 연결 
 	glBindVertexArray(0);
 }
 ```
