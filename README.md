@@ -60,6 +60,7 @@ void CreateTriangle()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	
 	//0번 속성에 vertices의 요소가 3개씩 분리되어 버텍스의 위치로 해석하도록 VAO에 알려주기
+	//(VAO 색인 값, 좌표수(x, y, z), 데이터 타입, 정상화 여부, 바이트 오프셋, 시작 색인 값)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	//VAO 사용 허용
 	glEnableVertexAttribArray(0);
