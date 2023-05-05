@@ -81,7 +81,7 @@ void Render()
     	glBindVertexArray(VBO);
     	//데이터를 바탕으로 그리기
     	glDrawArrays(GL_TRIANGLES, 0, 3);
-    	// 데이터 연결 해제
+    	//데이터 연결 해제
     	glBindVertexArray(0);
 }
 ```
