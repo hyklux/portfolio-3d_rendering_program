@@ -72,17 +72,17 @@ void CreateTriangle()
 
 void Render()
 {
-    // 배경 색상 초기화
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    // 컬러 버퍼, 뎁스 버퍼 초기화
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    	//배경 색상 초기화
+    	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    	//컬러 버퍼, 뎁스 버퍼 초기화
+    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // VBO에 있는 데이터 연결
-    glBindVertexArray(VBO);
-    // 데이터를 바탕으로 그리기
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    // 데이터 연결 해제
-    glBindVertexArray(0);
+    	//VBO에 있는 데이터 연결
+    	glBindVertexArray(VBO);
+    	//데이터를 바탕으로 그리기
+    	glDrawArrays(GL_TRIANGLES, 0, 3);
+    	// 데이터 연결 해제
+    	glBindVertexArray(0);
 }
 ```
 ## 이동, 회전, 스케일 변환
