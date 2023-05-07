@@ -120,7 +120,7 @@ model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
 
 //투영 정보 설정(fov: 45도, 종횡비: 화면 가로/세로, Near Plane: 0.1f, Far Plane: 100.0 
-glm::mat4 projection = glm::perspective(glm::radians(45.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
+glm::mat4 projection = glm::perspective(glm::radians(60.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
 
 //vertex shader에 model(월드 스페이스), projection(투영), view(뷰 스페이스) 값을 넘겨주기
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -532,6 +532,7 @@ void Model::RenderModel()
 Directional Light에 대한 그림자 처리에 사용
 
 
+![shadow_mapping_theory_spaces](https://user-images.githubusercontent.com/96270683/236655201-5bbc73e1-525b-49b4-9616-3a962195a6c6.png)
 ![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188812990-fb3984b6-cf9e-4c11-860b-9ef2eaf276a2.PNG)
 - ShadowMap.cpp
 ``` c++
@@ -598,6 +599,9 @@ void main()
 }
 ```
 ### Omni Directional Shadow Map
+
+
+![point_shadows_diagram](https://user-images.githubusercontent.com/96270683/236655224-c1489793-d13c-4ebc-962f-a01d87791297.png)
 ![opengl_omni_shadow](https://user-images.githubusercontent.com/96270683/188812956-62a0c2da-84bc-4eba-97cb-86d2e9657d3f.PNG)
 - Geometry Shader
 ```C++
