@@ -599,6 +599,7 @@ void main()
 }
 ```
 ### Omni Directional Shadow Map
+Point Light, Spot Light에 대한 그림자 처리에 사용
 
 
 ![point_shadows_diagram](https://user-images.githubusercontent.com/96270683/236655224-c1489793-d13c-4ebc-962f-a01d87791297.png)
