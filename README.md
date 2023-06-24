@@ -1,29 +1,29 @@
-# 3D 렌더링 프로그램
+# 3D Rendering Program
 
 ![opengl_final](https://user-images.githubusercontent.com/96270683/188821931-f96d2f21-9546-48a2-9651-fef8c7cb5d18.PNG)
-## 소개
-OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입니다.
+## Introduction
+This is a 3D rendering program directly implemented through the OpenGL library.
 
 
-프로그램을 실행하시려면 3DRenderingProgram.zip을 다운받아 압축을 푸신 후, 폴더 내 exe파일을 실행해 주세요.
+To run the program, download 3DRenderingProgram.zip, unzip it, and run the exe file in the folder.
 
-## 기능
-:heavy_check_mark: 삼각형 그리기
-
-
-:heavy_check_mark: 이동, 회전, 스케일 변환
+## Implmentations
+:heavy_check_mark: Drawing a triangle
 
 
-:heavy_check_mark: 카메라 투영
+:heavy_check_mark: Translation, rotation, scale transformation
 
 
-:heavy_check_mark: 텍스쳐 매핑
+:heavy_check_mark: Camera projection
 
 
-:heavy_check_mark: 라이팅
+:heavy_check_mark: Texture mapping
 
 
-:heavy_check_mark: 모델 로딩
+:heavy_check_mark: Lighting
+
+
+:heavy_check_mark: Loading models
 
 
 :heavy_check_mark: Shadow Map
@@ -32,8 +32,8 @@ OpenGL 라이브러리를 통해 직접 구현한 3D 렌더링 프로그램입�
 :heavy_check_mark: Skybox
 
 
-## 삼각형 그리기
-삼각형의 버텍스 데이터를 버퍼에 입력하고 Fragment Shader에 컬러값을 빨간색으로 설정합니다.
+## Drawing a triangle
+Put the vertex data of the triangle into the buffer and set the color value to red in the fragment shader.
 
 
 ![opengl_triangle](https://user-images.githubusercontent.com/96270683/188780416-24783747-a690-4d49-8583-257063ae0eb6.PNG)
@@ -46,62 +46,63 @@ void CreateTriangle()
 		0.0f, 1.0f, 0.0f
 	};
 
-	//VAO 생성
+	//Create VAOs
 	glGenVertexArrays(1, &VAO);
-	//우리가 생성한 VAO를 현재 수정 가능하도록 연결
+	//Connect the VAO we created to the current editable
 	glBindVertexArray(VAO);
 
-	//VBO 생성
+	//Create VBOs
 	glGenBuffers(1, &VBO);
-	//우리가 생성한 VBO를 현재 수정 가능하도록 연결
+	//Connect the VBO we created to the current editable
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	
-	//VBO에 삼각형 꼭지점 버텍스 정보 저장
+	//Store triangle vertex info in VBO
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	
-	//0번 속성에 vertices의 요소가 3개씩 분리되어 버텍스의 위치로 해석하도록 VAO에 알려주기
-	//(VAO 색인 값, 좌표수(x, y, z), 데이터 타입, 정상화 여부, 바이트 오프셋, 시작 색인 값)
+	//Attribute 0 tells the VAO to separate the elements of vertices by 3 and interpret them as vertices' positions.
+	//(VAO 색인 값, 좌표수(x, y, z), 데이터 타입, 정상화 여부, 바이트 오프셋, 시작 색인 값
+	//(VAO index value, number of coordinates (x, y, z), data type, normalization, byte offset, start index value)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	//VAO 사용 허용
+	//Allow use of VAO
 	glEnableVertexAttribArray(0);
 
-	//VBO 수정 종료 및 연결 초기화
+	//End VBO modification and initialize connection
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//VAO 수정 종료 및 연결 
+	//End and connect VAO fix
 	glBindVertexArray(0);
 }
 
 void Render()
 {
-    	//배경 색상 초기화
+    	//Reset background color
     	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    	//컬러 버퍼, 뎁스 버퍼 초기화
+    	//Initialize color buffer and depth buffer
     	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    	//VBO에 있는 데이터 연결
+    	//Data connection in VBO
     	glBindVertexArray(VBO);
-    	//데이터를 바탕으로 그리기
+    	//Draw according to the vertex data
     	glDrawArrays(GL_TRIANGLES, 0, 3);
-    	//데이터 연결 해제
+    	//Disconnect vertex data
     	glBindVertexArray(0);
 }
 ```
-## 이동, 회전, 스케일 변환
-이동, 회전, 스케일 변환행렬을 적용하여 삼각형의 위치, 각도, 비율을 조정합니다.
+## Translation, rotation, scale transformation
+Adjust the position, angle, and scale of triangles by applying translation, rotation, and scale transformation matrices.
 
 
 ![opengl_scale](https://user-images.githubusercontent.com/96270683/188781465-f34c0fa9-517d-4b47-96a1-eeaa33212a2a.PNG)
 ``` c++
 glm::mat4 model(1.0f);
 
-//회전
+//Rotation
 model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-//이동
+//Translation
 model = glm::translate(model, glm::vec3(triOffset, 0.0f, 0.0f));
-//스케일 변환
+//Scale transformation
 model = glm::scale(model, glm::vec3(curSize, 0.4f, 0.0f));
 
-//vertex shader에 uniformModel 값 넘겨주기
+//Pass uniformModel value to vertex shader
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 ```
 		
