@@ -292,16 +292,16 @@ vec4 CalcPointLights()
 	{
 		vec3 direction = FragPos - pointLights[i].position;
 		
-		//Point Light로부터의 거리 계산
+		//Calculate distance from point light
 		float distance = length(direction);
 		
-		//정규화된 Point Light로부터의 방향
+		//Direction from normalized point light
 		direction = normalize(direction);
 		
-		//Directional Light 요소 연산
+		//Result of directional light element
 		vec4 colour = CalcLightByDirection(pointLights[i].base, direction);
 		
-		//이차방정식을 이용하여 빛 감쇠 값 유도
+		//Derivation of light attenuation value using quadratic equation
 		float attenuation = pointLights[i].exponent * distance * distance +
 							pointLights[i].linear * distance +
 							pointLights[i].constant;
@@ -312,17 +312,17 @@ vec4 CalcPointLights()
 	return totalColour;
 }
 
-//ambient, diffuse, specular 요소 연산
+//Calculate ambient, diffuse, and specular elements
 vec4 CalcLightByDirection(Light light, vec3 direction)
 {
-	//ambient 라이팅 계산
+	//Calculate ambient lighting
 	vec4 ambientColour = vec4(light.colour, 1.0f) * light.ambientIntensity;
 	
-	//diffuse 라이팅 계산
+	//Calculate diffuse lighting
 	float diffuseFactor = max(dot(normalize(Normal), normalize(direction)), 0.0f);
 	vec4 diffuseColour = vec4(light.colour * light.diffuseIntensity * diffuseFactor, 1.0f);
 	
-	//specular 라이팅 계산
+	//Calculate specular lighting
 	vec4 specularColour = vec4(0, 0, 0, 0);
 	if(diffuseFactor > 0.0f)
 	{
@@ -337,22 +337,22 @@ vec4 CalcLightByDirection(Light light, vec3 direction)
 		}
 	}
 
-	//모든 라이팅 연산값의 합 반환
+	//Return the sum of all lighting operations
 	return (ambientColour + diffuseColour + specularColour);
 }
 
 void main()
 {
-	//Directional Light 연산 결과 적용
+	//Apply directional light calculation result
 	vec4 finalColour = CalcDirectionalLight();
-	//Point Lights 연산 결과 적용
+	//Apply point lights calculation result
 	finalColour += CalcPointLights();
 	
 	colour = texture(theTexture, TexCoord) * finalColour;
 }
 ```
 ### Spot Light
-Spot Light를 구현합니다.
+Spot light implementation.
 
 
 ![opengl_spot_light](https://user-images.githubusercontent.com/96270683/188808820-5160caeb-7ccd-42e2-bf3b-7566f561c2e2.PNG)
@@ -362,7 +362,7 @@ vec4 CalcSpotLight(SpotLight sLight)
 	vec3 rayDirection = normalize(FragPos - sLight.base.position);
 	float slFactor = dot(rayDirection, sLight.direction);
 	
-	//Spot Light 범위 안에 있으면 조명을 처리하고 그렇지 않으면 무시한다.
+	//Process the light if it is within range of the Spot Light, otherwise ignore it.
 	if(slFactor > sLight.edge)
 	{
 		vec4 colour = CalcPointLight(sLight.base);
@@ -387,7 +387,7 @@ vec4 CalcSpotLights()
 
 void main()
 {
-	//Directional Light, Point Lights, Spot Lights를 모두 계산한 값을 더해 최종 컬러값을 구한다.
+	//The final color value is obtained by adding the calculated values ​​of directional light, point lights, and spot lights.
 	vec4 finalColour = CalcDirectionalLight();
 	finalColour += CalcPointLights();
 	finalColour += CalcSpotLights();
@@ -395,14 +395,14 @@ void main()
 	colour = texture(theTexture, TexCoord) * finalColour;
 }
 ```
-## 모델 로딩
+## Loading models
 
 
 ![opengl_model](https://user-images.githubusercontent.com/96270683/188810385-fb06b19d-3115-49dc-a741-64e09035da52.PNG)
 ``` c++
 void Model::LoadModel(const std::string & fileName)
 {
-	//파일로부터 모델 데이터 불러오기
+	//Load model data from file
 	Assimp::Importer importer;
 	const aiScene *scene = importer.ReadFile(fileName, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 
@@ -412,21 +412,21 @@ void Model::LoadModel(const std::string & fileName)
 		return;
 	}
 	
-	//루트 노드부터 로딩 시작
+	//Start loading from the root node
 	LoadNode(scene->mRootNode, scene);
-	//머티리얼 로드
+	//Load materials
 	LoadMaterials(scene);
 }
 
 void Model::LoadNode(aiNode * node, const aiScene * scene)
 {
-	//노드에 속하는 메시 로드
+	//Load a mesh belonging to a node
 	for (size_t i = 0; i < node->mNumMeshes; i++)
 	{
 		LoadMesh(scene->mMeshes[node->mMeshes[i]], scene);
 	}
 	
-	//자식 노드를 재귀의 방식으로 계속 로드
+	//Continue loading child nodes in a recursive fashion
 	for (size_t i = 0; i < node->mNumChildren; i++)
 	{
 		LoadNode(node->mChildren[i], scene);
@@ -438,7 +438,7 @@ void Model::LoadMesh(aiMesh * mesh, const aiScene * scene)
 	std::vector<GLfloat> vertices;
 	std::vector<unsigned int> indices;
 
-	//버텍스 정보 저장
+	//Save vertex data
 	for (size_t i = 0; i < mesh->mNumVertices; i++)
 	{
 		vertices.insert(vertices.end(), { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z });
@@ -453,7 +453,7 @@ void Model::LoadMesh(aiMesh * mesh, const aiScene * scene)
 		vertices.insert(vertices.end(), { -mesh->mNormals[i].x, -mesh->mNormals[i].y, -mesh->mNormals[i].z });
 	}
 	
-	//인덱스 정보 저장
+	//Save index data
 	for (size_t i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
@@ -463,7 +463,7 @@ void Model::LoadMesh(aiMesh * mesh, const aiScene * scene)
 		}
 	}
 
-	//메시 생성
+	//Create mesh
 	Mesh* newMesh = new Mesh();
 	newMesh->CreateMesh(&vertices[0], &indices[0], vertices.size(), indices.size());
 	meshList.push_back(newMesh);
