@@ -60,7 +60,6 @@ void CreateTriangle()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	
 	//Attribute 0 tells the VAO to separate the elements of vertices by 3 and interpret them as vertices' positions.
-	//(VAO 색인 값, 좌표수(x, y, z), 데이터 타입, 정상화 여부, 바이트 오프셋, 시작 색인 값
 	//(VAO index value, number of coordinates (x, y, z), data type, normalization, byte offset, start index value)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	//Allow use of VAO
@@ -106,8 +105,8 @@ model = glm::scale(model, glm::vec3(curSize, 0.4f, 0.0f));
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 ```
 		
-## 카메라 투영
-카메라를 원근(perspective)으로 투영합니다. 투영 행렬 * 뷰 스페이스 행렬 * 월드 스페이스 행렬을 연산하여 vertex의 최종 위치를 계산합니다.  
+## Camera projection
+Projects the camera into perspective. Calculate the final position of the vertex by computing projection matrix * view space matrix * world space matrix.
 
 
 
@@ -117,13 +116,13 @@ model = glm::mat4(1.0f);
 model = glm::translate(model, glm::vec3(0.0f, 1.0f, -2.5f));
 model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 
-//카메라 설정
+//Create camera
 camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
 
-//투영 정보 설정(fov: 60도, 종횡비: 화면 가로/세로, Near Plane: 0.1f, Far Plane: 100.0 
+//Set projection data (fov: 60 degrees, aspect ratio: screen width/length, near plane: 0.1f, far plane: 100.0)
 glm::mat4 projection = glm::perspective(glm::radians(60.0f), (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.0f);
 
-//vertex shader에 model(월드 스페이스), projection(투영), view(뷰 스페이스) 값을 넘겨주기
+//Pass model(world space), projection(projection), view(view space) values ​​to vertex shader
 glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
@@ -142,13 +141,13 @@ uniform mat4 view;
 
 void main()
 {
-	//투영 행렬(projection) * 뷰 스페이스 행렬(view) * 월드 스페이스 행렬(model)을 연산하여 vertex의 최종 위치를 계산
+	//Calculate the final position of the vertex by computing the projection matrix (projection) * view space matrix (view) * world space matrix (model).
 	gl_Position = projection * view * model * vec4(pos, 1.0);
 	vCol = vec4(clamp(pos, 0.0f, 1.0f), 1.0f);
 }
 ```
-## 텍스쳐 매핑
-텍스처 파일을 로드하여 모델에 적용합니다.
+## Texture mapping
+Load the texture file and apply it to the model.
 
 
 ![opengl_texture](https://user-images.githubusercontent.com/96270683/188788484-c7ed729c-45e8-4922-a0e0-be2ce415ed27.PNG)
@@ -166,20 +165,20 @@ void Texture::LoadTexture()
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	/**텍스쳐 매핑 옵션 설정!*/
-	//가로 범위가 [0.0,1.0]을 벗어나게 되면 GL_REPEAT 옵션 적용
+	/**Set texture mapping options*/
+	//Apply GL_REPEAT option when the horizontal range is out of [0.0,1.0]
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//세로 범위가 [0.0,1.0]을 벗어나게 되면 GL_REPEAT 옵션 적용
+	//Apply the GL_REPEAT option when the vertical range is out of [0.0,1.0]
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//폴리곤이 텍스처보다 작을 때 GL_LINEAR 옵션 적용
+	//Apply GL_LINEAR option when polygon is smaller than texture
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//폴리곤이 텍스처보다 클 때 GL_LINEAR 옵션으로 적용
+	//Apply GL_LINEAR option when polygon is larger than texture
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	//로드한 텍스쳐에 대한 렌더링 옵션 설정
+	//Set rendering options for loaded textures
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
 	
-	//mipmap 생성
+	//Generate mipmap
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -230,8 +229,8 @@ void main()
 	colour = texture(theTexture, TexCoord);
 }
 ```
-## 라이팅
-라이팅 구현에는 Phong Lighting Model(Ambient + Diffuse + Specular)을 사용합니다.
+## Lighting
+Phong Lighting Model (Ambient + Diffuse + Specular) was used to implement lighting.
 ### Ambient
 
 
@@ -245,7 +244,7 @@ void main()
 
 ![lighting_speccular](https://user-images.githubusercontent.com/96270683/235663875-c334c1d8-7823-4ee2-8be7-8bb7490ca465.png)
 ### Directional Light
-Fragment Shader에서 Ambient, Diffuse, Specular 라이트 연산을 각각 처리하여 Directional Light를 구현합니다.
+Ambient, diffuse, and specular light operations are processed in the fragment shader to implement directional light.
 
 
 ![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188805453-cd1a67df-6daf-400a-8efc-c726738456e1.PNG)
@@ -253,21 +252,21 @@ Fragment Shader에서 Ambient, Diffuse, Specular 라이트 연산을 각각 처�
 ``` c++
 void main()
 {
-	/**Ambient Light 연산 (빛의 색 * ambient 강도)*/
+	/**Ambient Light calculation (light color * ambient intensity)*/
 	vec4 ambientColour = vec4(directionalLight.colour, 1.0f) * directionalLight.ambientIntensity;
 	
-	/**Diffuse Light 연산 (빛의 색 * diffuse 강도 * diffuse 비율)*/
-	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f); //법선 벡터와 빛 방향  내적을 통해 diffuseFactor 계산
+	/**Diffuse Light calculation (light color * diffuse intensity * diffuse ratio)*/
+	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f); //Calculate diffuseFactor through normal vector and light direction dot product
 	vec4 diffuseColour = vec4(directionalLight.colour, 1.0f) * directionalLight.diffuseIntensity * diffuseFactor;
 	
-	/**Specular Light 연산  (빛의 색 * specular 강도 * shininess를 적용한 specular 비율)*/
+	/**Specular Light calculation (light color * specular intensity * specular ratio with shininess applied)*/
 	vec4 specularColour = vec4(0, 0, 0, 0);
 	if(diffuseFactor > 0.0f)
 	{
 		vec3 fragToEye = normalize(eyePosition - FragPos);
 		vec3 reflectedVertex = normalize(reflect(directionalLight.direction, normalize(Normal)));
 		
-		//fragment에서 카메라를 향하는 벡터와 빛의 반사 벡터의 내적을 통해 specularFactor 계산
+		//Calculate the specularFactor through the dot product of the vector pointing from the fragment to the camera and the light reflection vector.
 		float specularFactor = dot(fragToEye, reflectedVertex);
 		if(specularFactor > 0.0f)
 		{
@@ -280,13 +279,12 @@ void main()
 }
 ```
 ### Point Light
-Point Light는 Directional Light 연산에 빛 감쇠(Attenuation) 연산을 더하여 처리합니다.
-
+Point light is processed by adding attenuation calculation to directional light calculation.
 
 ![opengl_point_light](https://user-images.githubusercontent.com/96270683/188807781-70477324-3bf0-4606-a922-3633226c5802.PNG)
 - Fragment Shader
 ``` c++
-//Point Light 연산(Directional Light 연산 + 빛 감쇠 연산)
+//Point light calculation (directional light operation + light attenuation calculation)
 vec4 CalcPointLights()
 {
 	vec4 totalColour = vec4(0, 0, 0, 0);
@@ -517,21 +515,20 @@ void Model::RenderModel()
 	{
 		unsigned int materialIndex = meshToTex[i];
 		
-		//텍스쳐 렌더
+		//Render texture
 		if (materialIndex < textureList.size() && textureList[materialIndex])
 		{
 			textureList[materialIndex]->UseTexture();
 		}
 
-		//메시 렌더
+		//Render mesh
 		meshList[i]->RenderMesh();
 	}
 }
 ```
 ## Shadow Map
 ### Directional Shadow Map
-Directional Light에 대한 그림자 처리에 사용
-
+Used to process shadows for directional lights.
 
 ![shadow_mapping_theory_spaces](https://user-images.githubusercontent.com/96270683/236655201-5bbc73e1-525b-49b4-9616-3a962195a6c6.png)
 ![opengl_directional_light](https://user-images.githubusercontent.com/96270683/188812990-fb3984b6-cf9e-4c11-860b-9ef2eaf276a2.PNG)
@@ -543,7 +540,7 @@ bool ShadowMap::Init(unsigned int width, unsigned int height)
 
 	glGenFramebuffers(1, &FBO);
 
-	//섀도우 맵 텍스쳐 설젇
+	//Set the shadow map texture
 	glGenTextures(1, &shadowMap);
 	glBindTexture(GL_TEXTURE_2D, shadowMap);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
@@ -556,7 +553,7 @@ bool ShadowMap::Init(unsigned int width, unsigned int height)
 	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
-	//프레임버퍼에 섀도우 맵 데이터 저장
+	//Store shadow map data in framebuffer
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowMap, 0);
 
@@ -592,7 +589,7 @@ void ShadowMap::Read(GLenum texUnit)
 layout (location = 0) in vec3 pos;
 
 uniform mat4 model;
-uniform mat4 directionalLightTransform; //광원의 위치로의 변환 행렬
+uniform mat4 directionalLightTransform; //Transformation matrix to position of light source
 
 void main()
 {
@@ -600,7 +597,7 @@ void main()
 }
 ```
 ### Omni Directional Shadow Map
-Point Light, Spot Light에 대한 그림자 처리에 사용
+Used for shadow processing for Point Light and Spot Light
 
 
 ![point_shadows_diagram](https://user-images.githubusercontent.com/96270683/236655224-c1489793-d13c-4ebc-962f-a01d87791297.png)
