@@ -2,7 +2,7 @@
 
 ![opengl_final](https://user-images.githubusercontent.com/96270683/188821931-f96d2f21-9546-48a2-9651-fef8c7cb5d18.PNG)
 ## Introduction
-This is a 3D rendering program directly implemented through the OpenGL library.
+This is a 3D rendering program implemented using OpenGL library.
 
 
 To run the program, download 3DRenderingProgram.zip, unzip it, and run the exe file in the folder.
